@@ -1,0 +1,32 @@
+name: Build Docker Image
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        with:
+          path: "${GITHUB_WORKSPACE}/Docker-Kube-Utils"
+
+      - name: Build Kube-Utils Docker Image
+        shell: bash
+        env:
+          USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        working-directory: ${GITHUB_WORKSPACE}/Docker-Kube-Utils
+        run: |
+          docker build . --file Dockerfile --build-arg ANSIBLE_VERSION=6.0.0 --build-arg YQ_VERSION=v4.25.3 \
+            --tag "${USERNAME}/kube-utils:latest"
+
+      - name: Push Kube-Utils Docker Image to Docker Hub
+        shell: bash
+        env:
+          USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
+        run: |
+          docker login -u ${USERNAME} -p ${DOCKER_HUB_TOKEN}
+          docker push "${USERNAME}/kube-utils:latest"
+          docker logout
