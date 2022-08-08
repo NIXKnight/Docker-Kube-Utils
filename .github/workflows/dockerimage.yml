@@ -19,7 +19,7 @@ jobs:
         working-directory: ${GITHUB_WORKSPACE}/Docker-Kube-Utils
         run: |
           docker build . --file Dockerfile --build-arg ANSIBLE_VERSION=6.0.0 --build-arg YQ_VERSION=v4.25.3 \
-            --tag "${USERNAME}/kube-utils:latest"
+            --build-arg TERRAFORM_VERSION=1.2.6 --tag "${USERNAME}/kube-utils:latest"
 
       - name: Push Kube-Utils Docker Image to Docker Hub
         shell: bash
