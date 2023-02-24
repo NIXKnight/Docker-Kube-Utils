@@ -8,6 +8,12 @@ ARG HELM_VERSION
 ARG AVP_VERSION
 ARG YQ_BINARY=yq_linux_amd64
 
+ARG USER=999
+
+RUN set -eux; \
+  groupadd -g ${USER} user; \
+  useradd -m -d /home/user -r -u ${USER} -g user user
+
 RUN set -eux; \
   echo "locales locales/default_environment_locale select en_US.UTF-8" | debconf-set-selections; \
   echo "locales locales/locales_to_be_generated multiselect en_US.UTF-8 UTF-8" | debconf-set-selections
@@ -38,5 +44,13 @@ RUN set -eux; \
 ENV LANG='en_US.UTF-8'
 ENV LANGUAGE='en_US:en'
 ENV LC_ALL='en_US.UTF-8'
+
+ENV HELM_CACHE_HOME=/home/user/.helm
+ENV HELM_CONFIG_HOME=/home/user/.helm
+ENV HELM_DATA_HOME=/home/user/.helm
+
+ENV USER=user
+USER $USER
+WORKDIR /home/user
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
