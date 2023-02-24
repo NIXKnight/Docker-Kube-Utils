@@ -25,5 +25,6 @@ jobs:
             YQ_VERSION=v4.25.3
             KUSTOMIZE_VERSION=4.5.7
             HELM_VERSION=3.10.3-1
+            AVP_VERSION=1.13.1
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:v0.2, ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:v0.3, ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:latest

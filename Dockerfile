@@ -5,6 +5,7 @@ ARG ANSIBLE_VERSION
 ARG YQ_VERSION
 ARG KUSTOMIZE_VERSION
 ARG HELM_VERSION
+ARG AVP_VERSION
 ARG YQ_BINARY=yq_linux_amd64
 
 RUN set -eux; \
@@ -29,6 +30,10 @@ RUN set -eux; \
   chmod +x /usr/local/bin/yq
 
 RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash -s ${KUSTOMIZE_VERSION} /usr/local/bin/
+
+RUN set -eux; \
+  curl https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 --output /usr/local/bin/argocd-vault-plugin; \
+  chmod +x /usr/local/bin/argocd-vault-plugin
 
 ENV LANG='en_US.UTF-8'
 ENV LANGUAGE='en_US:en'
