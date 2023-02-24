@@ -1,6 +1,6 @@
 # **CHANGELOG**
 
-* **2023-02-32**
+* **v0.2**
   * Removed Terraform.
   * Added Kustomize.
   * Added Helm.

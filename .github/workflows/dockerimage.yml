@@ -8,26 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2.1.0
         with:
-          path: "${GITHUB_WORKSPACE}/Docker-Kube-Utils"
+          username: "${{ secrets.DOCKER_HUB_USERNAME }}"
+          password: "${{ secrets.DOCKER_HUB_TOKEN }}"
 
-      - name: Build Kube-Utils Docker Image
-        shell: bash
-        env:
-          USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-        working-directory: ${GITHUB_WORKSPACE}/Docker-Kube-Utils
-        run: |
-          docker build . --file Dockerfile --build-arg ANSIBLE_VERSION=6.0.0 --build-arg YQ_VERSION=v4.25.3 \
-            --build-arg KUSTOMIZE_VERSION=4.5.7 --build-arg HELM_VERSION=3.10.3-1 \
-            --tag "${USERNAME}/kube-utils:v0.2" --tag "${USERNAME}/kube-utils:latest"
-
-      - name: Push Kube-Utils Docker Image to Docker Hub
-        shell: bash
-        env:
-          USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-        run: |
-          docker login -u ${USERNAME} -p ${DOCKER_HUB_TOKEN}
-          docker push "${USERNAME}/kube-utils:latest"
-          docker logout
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          build-args: |
+            ANSIBLE_VERSION=6.0.0
+            YQ_VERSION=v4.25.3
+            KUSTOMIZE_VERSION=4.5.7
+            HELM_VERSION=3.10.3-1
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:v0.2, ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:latest
