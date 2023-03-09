@@ -1,5 +1,8 @@
 # **CHANGELOG**
 
+* **v0.32**
+  * Fix ArgoCD Vault Plugin download command.
+
 * **v0.31**
   * Added low privileged system user.
 
