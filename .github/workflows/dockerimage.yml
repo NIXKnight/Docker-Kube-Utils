@@ -21,10 +21,10 @@ jobs:
         with:
           context: .
           build-args: |
-            ANSIBLE_VERSION=6.0.0
-            YQ_VERSION=v4.25.3
-            KUSTOMIZE_VERSION=4.5.7
-            HELM_VERSION=3.10.3-1
-            AVP_VERSION=1.13.1
+            ANSIBLE_VERSION=11.1.0
+            YQ_VERSION=v4.44.6
+            KUSTOMIZE_VERSION=5.5.0
+            HELM_VERSION=3.16.4
+            AVP_VERSION=1.18.1
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:v0.32, ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:v0.40, ${{ secrets.DOCKER_HUB_USERNAME }}/kube-utils:latest
